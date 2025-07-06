@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>YouTube Music Search</title>
+</head>
+<body>
+  <h2>Search for Music</h2>
+  <input type="text" id="searchTerm" placeholder="Enter artist/song name">
+  <button onclick="searchYouTube()">Search</button>
+
+  <div id="results"></div>
+
+  <script>
+    const apiKey = "AIzaSyCgeXMsW4GMChNpcL9UPUo5Vcy1XCtJidk";
+
+    function searchYouTube() {
+      const query = document.getElementById("searchTerm").value;
+      const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=5&q=${encodeURIComponent(query)}&key=${apiKey}`;
+
+      fetch(url)
+        .then(res => res.json())
+        .then(data => {
+          const container = document.getElementById("results");
+          container.innerHTML = "";
+
+          data.items.forEach(item => {
+            const videoId = item.id.videoId;
+            const title = item.snippet.title;
+
+            container.innerHTML += `
+              <div>
+                <h4>${title}</h4>
+                <iframe width="300" height="200"
+                        src="https://www.youtube.com/embed/${videoId}"
+                        frameborder="0" allowfullscreen></iframe>
+              </div>
+            `;
+          });
+        });
+    }
+  </script>
+
+  <script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyCPEPfSXVgtgYsTsvfAcY2V8KdGC2MOq7I",
+    authDomain: "k-music-1424.firebaseapp.com",
+    projectId: "k-music-1424",
+    storageBucket: "k-music-1424.firebasestorage.app",
+    messagingSenderId: "381931211717",
+    appId: "1:381931211717:web:5e405fad73e074f67759ac",
+    measurementId: "G-S2BJYMP858"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
+
+</body>
+</html>
